@@ -1,6 +1,7 @@
 from .imports import *
 
 from .low_level import *
+from .utils import tee_output
 
 
 class Event(enum.Enum):
@@ -17,7 +18,12 @@ def simple_logs(
     progress_freq: int = 1_000,
     checkpoint_freq: int = 10_000,
 ) -> set[Event]:
-    events = set() if os.path.exists(name) else set([Event.INIT])
+    if os.path.exists(name):
+        events = set()
+    else:
+        if "pytest" not in sys.argv[0]: # todo figure out why this fails in tests
+            tee_output("out.log")
+        events = set([Event.INIT])
 
     with experiment(name):
         if iteration % progress_freq == 0:

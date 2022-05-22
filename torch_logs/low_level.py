@@ -1,6 +1,5 @@
 from .imports import *
 
-import __main__
 
 @contextlib.contextmanager
 def directory(path: str):
@@ -17,10 +16,10 @@ def directory(path: str):
 def log_pid() -> None:
     with open("pid.txt", "w") as f:
         f.write(str(os.getpid()))
-
+        
 
 def log_config() -> None:
-    shutil.copy(__main__.__file__, "config.py")
+    shutil.copy(main.__file__, "config.py")
 
 
 def log_losses(losses: pd.DataFrame) -> None:
